@@ -1,4 +1,5 @@
-const trade = (perc, invest) =>  ({ perc, invest })
+let tradeId = 1
+const trade = (perc, invest) => ({ id: tradeId++, perc, invest })
 
 export const trades = [
   trade(81, 385.44),

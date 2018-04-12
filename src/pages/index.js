@@ -167,7 +167,7 @@ const inlineStyles = {
 class Index extends React.Component {
   state = {
     openModal: false,
-    openDrawer: false,
+    openDrawer: true,
     checkedG: true,
   }
 
@@ -225,151 +225,153 @@ class Index extends React.Component {
           })}
         >
           <div className={classes.toolbar} />
-          <Grid container spacing={24} justify='center'>
-            <Grid item xs={4}>
-              <Card className={classes.card}>
-                <CardContent className={classes.cardContent}>
-                  <Typography className={classes.cardTitle} color="textSecondary">
-                    Data de hoje
-                  </Typography>
-                  <Typography variant="headline" component="h2">
-                    {moment().format('DD/MM/YYYY')}
-                  </Typography>
-                  <Typography color="textSecondary">
-                    {moment().format('dddd')}
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Button size="small">Iniciar trade</Button>
-                </CardActions>
-              </Card>
-            </Grid>
-            <Grid item xs={4}>
-              <Card className={classes.card}>
-                <CardContent className={classes.cardContent}>
-                  <Typography className={classes.cardTitle} color="textSecondary">
-                    Banca Inicial
-                  </Typography>
-                  <Typography variant="headline" component="h2">
-                    $ 10,000.00
-                  </Typography>
-                  <Typography color="textSecondary">
-                    Valor Fixo
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Button size="small">Editar valor</Button>
-                </CardActions>
-              </Card>
-            </Grid>
-            <Grid item xs={4}>
-              <Card className={classes.card}>
-                <CardContent className={classes.cardContent}>
-                  <Typography className={classes.cardTitle} color="textSecondary">
-                    Percentual de Risco
-                  </Typography>
-                  <Typography variant="headline" component="h2">
-                    6% por dia
-                  </Typography>
-                  <Typography color="textSecondary">
-                    3 tentativas
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Button size="small">Editar valores</Button>
-                </CardActions>
-              </Card>
-            </Grid>
-          </Grid>
-
-          <Grid item xs={12}>
-            <Grid container spacing={24} justify='center'>
-              <Grid item xs={4}>
-                <Card className={classes.card}>
-                  <CardContent className={classes.cardContent}>
-                    <Typography className={classes.cardTitle} color="textSecondary">
-                      Banca Atualizada
-                    </Typography>
-                    <Typography variant="headline" component="h2">
-                      $ 33,001.83
-                      {' '}<TrendingUp />
-                    </Typography>
-                    <Typography color="textSecondary">
-                      Dinâmico
-                    </Typography>
-                  </CardContent>
-                </Card>
+          <Grid container spacing={24}>
+            <Grid item xs={12}>
+              <Grid container spacing={24} justify='center'>
+                <Grid item xs={4}>
+                  <Card className={classes.card}>
+                    <CardContent className={classes.cardContent}>
+                      <Typography className={classes.cardTitle} color="textSecondary">
+                        Data de hoje
+                      </Typography>
+                      <Typography variant="headline" component="h2">
+                        {moment().format('DD/MM/YYYY')}
+                      </Typography>
+                      <Typography color="textSecondary">
+                        {moment().format('dddd')}
+                      </Typography>
+                    </CardContent>
+                    <CardActions>
+                      <Button size="small">Iniciar trade</Button>
+                    </CardActions>
+                  </Card>
+                </Grid>
+                <Grid item xs={4}>
+                  <Card className={classes.card}>
+                    <CardContent className={classes.cardContent}>
+                      <Typography className={classes.cardTitle} color="textSecondary">
+                        Banca Inicial
+                      </Typography>
+                      <Typography variant="headline" component="h2">
+                        $ 10,000.00
+                      </Typography>
+                      <Typography color="textSecondary">
+                        Valor Fixo
+                      </Typography>
+                    </CardContent>
+                    <CardActions>
+                      <Button size="small">Editar valor</Button>
+                    </CardActions>
+                  </Card>
+                </Grid>
+                <Grid item xs={4}>
+                  <Card className={classes.card}>
+                    <CardContent className={classes.cardContent}>
+                      <Typography className={classes.cardTitle} color="textSecondary">
+                        Percentual de Risco
+                      </Typography>
+                      <Typography variant="headline" component="h2">
+                        6% por dia
+                      </Typography>
+                      <Typography color="textSecondary">
+                        3 tentativas
+                      </Typography>
+                    </CardContent>
+                    <CardActions>
+                      <Button size="small">Editar valores</Button>
+                    </CardActions>
+                  </Card>
+                </Grid>
               </Grid>
-              <Grid item xs={4}>
-                <Card className={classes.card}>
-                  <CardContent className={classes.cardContent}>
-                    <Typography className={classes.cardTitle} color="textSecondary">
-                      Ganhos/Perdas
-                    </Typography>
-                    <Typography variant="headline" component="h2">
-                      $ 13,729.63
-                      {' '}<TrendingDown />
-                    </Typography>
-                    <Typography color="textSecondary">
-                      Positivo
-                    </Typography>
-                  </CardContent>
-                </Card>
+              <Grid container spacing={24} justify='center'>
+                <Grid item xs={4}>
+                  <Card className={classes.card}>
+                    <CardContent className={classes.cardContent}>
+                      <Typography className={classes.cardTitle} color="textSecondary">
+                        Banca Atualizada
+                      </Typography>
+                      <Typography variant="headline" component="h2">
+                        $ 33,001.83
+                        {' '}<TrendingUp />
+                      </Typography>
+                      <Typography color="textSecondary">
+                        Dinâmico
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Grid>
+                <Grid item xs={4}>
+                  <Card className={classes.card}>
+                    <CardContent className={classes.cardContent}>
+                      <Typography className={classes.cardTitle} color="textSecondary">
+                        Ganhos/Perdas
+                      </Typography>
+                      <Typography variant="headline" component="h2">
+                        $ 13,729.63
+                        {' '}<TrendingDown />
+                      </Typography>
+                      <Typography color="textSecondary">
+                        Positivo
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Grid>
+                <Grid item xs={4}>
+                  <Card className={classes.card}>
+                    <CardContent className={classes.cardContent}>
+                      <Typography className={classes.cardTitle} color="textSecondary">
+                        Alavancagem
+                      </Typography>
+                      <Typography variant="headline" component="h2">
+                        71,24%
+                        {' '}<TrendingFlat />
+                      </Typography>
+                      <Typography color="textSecondary">
+                        Positivo
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Grid>
               </Grid>
-              <Grid item xs={4}>
-                <Card className={classes.card}>
-                  <CardContent className={classes.cardContent}>
-                    <Typography className={classes.cardTitle} color="textSecondary">
-                      Alavancagem
+              <Grid container spacing={24} justify='flex-start'>
+                <Grid item xs={12}>
+                  <div className={classes.tableTitle}>
+                    <Typography variant="title">
+                      Operações
                     </Typography>
-                    <Typography variant="headline" component="h2">
-                      71,24%
-                      {' '}<TrendingFlat />
-                    </Typography>
-                    <Typography color="textSecondary">
-                      Positivo
-                    </Typography>
-                  </CardContent>
-                </Card>
+                  </div>
+                  <Paper>
+                    <Table className={classes.table}>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell numeric>Mão</TableCell>
+                          <TableCell numeric>% O.P</TableCell>
+                          <TableCell numeric>Investimento</TableCell>
+                          <TableCell numeric>Resultado O.P</TableCell>
+                          <TableCell numeric>Lucro O.P</TableCell>
+                          <TableCell numeric>L/Meio</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {data.trades.reverse().map(n => {
+                          const TableRowColored = n.perc < 80 ? TableRowLoss : TableRowGain
+                          return (
+                            <TableRowColored key={n.id}>
+                              <TableCell numeric>{n.id}</TableCell>
+                              <TableCell numeric>{n.perc}%</TableCell>
+                              <TableCell numeric>{currency.format(n.invest)}</TableCell>
+                              <TableCell numeric>{currency.format(100)}</TableCell>
+                              <TableCell numeric>{currency.format(200)}</TableCell>
+                              <TableCell numeric>{currency.format(300)}</TableCell>
+                            </TableRowColored>
+                          )
+                        })}
+                      </TableBody>
+                    </Table>
+                  </Paper>
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
-
-          <Grid item>
-            <div className={classes.padding}>
-              <div className={classes.tableTitle}>
-                <Typography variant="title">
-                  Operações
-                </Typography>
-              </div>
-              <Paper>
-                <Table className={classes.table}>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>% O.P</TableCell>
-                      <TableCell numeric>Investimento</TableCell>
-                      <TableCell numeric>Resultado O.P</TableCell>
-                      <TableCell numeric>Lucro O.P</TableCell>
-                      <TableCell numeric>L/Meio</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {data.trades.map((n, i) => {
-                      const Row = n.perc < 80 ? TableRowLoss : TableRowGain
-                      return (
-                        <Row key={i}>
-                          <TableCell>{n.perc}%</TableCell>
-                          <TableCell numeric>{currency.format(n.invest)}</TableCell>
-                          <TableCell numeric>{currency.format(100)}</TableCell>
-                          <TableCell numeric>{currency.format(200)}</TableCell>
-                          <TableCell numeric>{currency.format(300)}</TableCell>
-                        </Row>
-                      )
-                    })}
-                  </TableBody>
-                </Table>
-              </Paper>
-            </div>
           </Grid>
         </main>
 
