@@ -32,4 +32,11 @@ export const simulations = perc => [
   simulate(perc, 13131.57, 10505.25),
   simulate(perc, 19434.72, 15547.78),
   simulate(perc, 28763.39, 23010.71),
+  simulate(perc, 42569.82, 34055.86),
+  simulate(perc, 63003.34, 50402.67),
+  simulate(perc, 93244.94, 74595.95),
+  simulate(perc, 138002.52, 110402.01),
+  simulate(perc, 204243.73, 163394.98),
+  simulate(perc, 302280.72, 241824.57),
+  simulate(perc, 447375.46, 357900.37),
 ]

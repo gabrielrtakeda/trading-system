@@ -168,7 +168,7 @@ class Index extends React.Component {
   state = {
     openModal: false,
     openDrawer: true,
-    checkedG: true,
+    darkMode: true,
   }
 
   handleModalClose = () => this.setState({ openModal: false })
@@ -180,7 +180,7 @@ class Index extends React.Component {
   };
 
   render() {
-    const { classes } = this.props
+    const { classes, theme } = this.props
     const { openModal, openDrawer } = this.state
 
     return (
@@ -197,9 +197,9 @@ class Index extends React.Component {
             </Typography>
             <Tooltip id="tooltip-darkmode" title="Dark Mode">
               <Switch
-                checked={this.state.checkedG}
-                onChange={this.handleChange('checkedG')}
-                value="checkedG"
+                checked={this.state.darkMode}
+                onChange={this.handleChange('darkMode')}
+                value="darkMode"
               />
             </Tooltip>
             <Tooltip
@@ -353,10 +353,10 @@ class Index extends React.Component {
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {data.trades.reverse().map(n => {
+                        {data.trades.sort((a, b) => b.id - a.id).map(n => {
                           const TableRowColored = n.perc < 80 ? TableRowLoss : TableRowGain
                           return (
-                            <TableRowColored key={n.id}>
+                            <TableRowColored key={n.id} hover>
                               <TableCell numeric>{n.id}</TableCell>
                               <TableCell numeric>{n.perc}%</TableCell>
                               <TableCell numeric>{currency.format(n.invest)}</TableCell>
@@ -407,7 +407,7 @@ class Index extends React.Component {
                   <TableBody>
                     {data.simulations(81).map((n, i) => {
                       return (
-                        <TableRow className={classes.row} key={i}>
+                        <TableRow className={classes.row} key={i} hover>
                           <TableCell numeric>{i + 1}</TableCell>
                           <TableCell numeric>{n.perc}%</TableCell>
                           <TableCell numeric style={inlineStyles.cellHighlight}>{currency.format(n.invest)}</TableCell>
@@ -421,8 +421,13 @@ class Index extends React.Component {
             </div>
           </Grid>
 
-          <Button variant="fab" className={classes.fab} color='primary' onClick={this.handleModalOpen}>
-            <AddIcon />
+          <Button
+            variant="fab"
+            className={classes.fab}
+            color='secondary'
+            onClick={this.handleModalOpen}
+          >
+            <AddIcon style={{ fill: theme.palette.common.white }} />
           </Button>
         </Drawer>
 
@@ -452,4 +457,4 @@ Index.propTypes = {
   classes: PropTypes.object.isRequired,
 }
 
-export default withRoot(withStyles(styles)(Index))
+export default withRoot(withStyles(styles, { withTheme: true })(Index))

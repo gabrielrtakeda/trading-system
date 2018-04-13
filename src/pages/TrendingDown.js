@@ -5,7 +5,7 @@ import TrendingDown from '@material-ui/icons/TrendingDown';
 
 const styles = theme => ({
   icon: {
-    fill: theme.palette.error.main,
+    fill: theme.palette.error.accent,
   },
 })
 
