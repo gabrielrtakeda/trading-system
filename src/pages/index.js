@@ -11,6 +11,8 @@ import IconButton from 'material-ui/IconButton'
 import AddIcon from '@material-ui/icons/Add'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
 import FlashOnIcon from '@material-ui/icons/FlashOn'
+import Send from '@material-ui/icons/Send'
+import Delete from '@material-ui/icons/Delete'
 import Table, { TableBody, TableHead, TableRow } from 'material-ui/Table'
 import Paper from 'material-ui/Paper'
 import Card, { CardActions, CardContent } from 'material-ui/Card'
@@ -20,6 +22,7 @@ import Divider from 'material-ui/Divider'
 import Modal from 'material-ui/Modal'
 import Tooltip from 'material-ui/Tooltip'
 import Switch from 'material-ui/Switch'
+import TextField from 'material-ui/TextField'
 import moment from 'moment'
 
 import * as data from './data'
@@ -146,6 +149,20 @@ const styles = theme => ({
   hide: {
     display: 'none',
   },
+  formContainer: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  textField: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+  },
+  rightIcon: {
+    marginLeft: theme.spacing.unit,
+  },
+  actionButtons: {
+    marginTop: theme.spacing.unit * 3,
+  },
 })
 
 const inlineStyles = {
@@ -176,7 +193,7 @@ class Index extends React.Component {
   handleDrawerOpen = () => this.setState({ openDrawer: true })
 
   render() {
-    const { classes, theme, darkMode } = this.props
+    const { classes, theme, darkMode, trades } = this.props
     const { openModal, openDrawer } = this.state
 
     return (
@@ -341,24 +358,33 @@ class Index extends React.Component {
                       <TableHead>
                         <TableRow>
                           <TableCell numeric>Mão</TableCell>
+                          <TableCell>Ativo</TableCell>
                           <TableCell numeric>% O.P</TableCell>
                           <TableCell numeric>Investimento</TableCell>
-                          <TableCell numeric>Resultado O.P</TableCell>
                           <TableCell numeric>Lucro O.P</TableCell>
                           <TableCell numeric>L/Meio</TableCell>
+                          <TableCell>Status</TableCell>
+                          <TableCell>Criado em</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {data.trades.sort((a, b) => b.id - a.id).map(n => {
-                          const TableRowColored = n.perc < 80 ? TableRowLoss : TableRowGain
+                        {trades.sort((a, b) => b.updatedAt - a.updatedAt).map(n => {
+                          const StatusesRow = {
+                            trading: TableRow,
+                            gain: TableRowGain,
+                            loss: TableRowLoss,
+                          }
+                          const TableRowColored = StatusesRow[n.status]
                           return (
                             <TableRowColored key={n.id} hover>
-                              <TableCell numeric>{n.id}</TableCell>
-                              <TableCell numeric>{n.perc}%</TableCell>
-                              <TableCell numeric>{currency.format(n.invest)}</TableCell>
-                              <TableCell numeric>{currency.format(100)}</TableCell>
-                              <TableCell numeric>{currency.format(200)}</TableCell>
-                              <TableCell numeric>{currency.format(300)}</TableCell>
+                              <TableCell numeric>{n.hand}</TableCell>
+                              <TableCell>{n.asset}</TableCell>
+                              <TableCell numeric>{n.incomePercentual * 100}%</TableCell>
+                              <TableCell numeric>{currency.format(n.investiment)}</TableCell>
+                              <TableCell numeric>{currency.format(n.gain)}</TableCell>
+                              <TableCell numeric>{currency.format(n.retainGain)}</TableCell>
+                              <TableCell>{n.status}</TableCell>
+                              <TableCell>{moment(n.createdAt).format('DD/MM/YYYY HH:mm:ss')}</TableCell>
                             </TableRowColored>
                           )
                         })}
@@ -437,11 +463,56 @@ class Index extends React.Component {
         >
           <div style={inlineStyles.modal} className={classes.modalPaper}>
             <Typography variant="title" id="modal-title">
-              Text in a modal
+              Cadastro de operação
             </Typography>
             <Typography variant="subheading" id="simple-modal-description">
-              Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+              Informe os dados para cadastro de uma nova operação.
             </Typography>
+            <form className={classes.formContainer}>
+              <TextField
+                fullWidth
+                margin="normal"
+                label="Ativo"
+                id="asset"
+                className={classes.textField}
+                helperText="Ativo utilizado para a operação."
+              />
+              <TextField
+                fullWidth
+                margin="normal"
+                label="Rendimento"
+                id="income-percentual"
+                className={classes.textField}
+                helperText="Porcentagem de rendimento do ativo."
+              />
+              <TextField
+                fullWidth
+                margin="normal"
+                label="Investimento"
+                id="investiment"
+                className={classes.textField}
+                helperText="Valor a ser investido na operação."
+              />
+              <Grid container justify='space-between' className={classes.actionButtons}>
+                <Grid item>
+                  <Button
+                    className={classes.button}
+                    variant="raised"
+                    color="primary"
+                    onClick={this.handleModalClose}
+                  >
+                    Cancel
+                    <Delete className={classes.rightIcon} />
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button className={classes.button} variant="raised" color="secondary" type='submit'>
+                    Send
+                    <Send className={classes.rightIcon} />
+                  </Button>
+                </Grid>
+              </Grid>
+            </form>
           </div>
         </Modal>
       </div>
@@ -454,7 +525,8 @@ Index.propTypes = {
 }
 
 const mapStateToProps = state => ({
-  darkMode: state.theme.darkMode
+  darkMode: state.theme.darkMode,
+  trades: state.trades,
 })
 
 export default connect(mapStateToProps, ThemeActions)(
