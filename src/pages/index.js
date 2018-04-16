@@ -31,7 +31,7 @@ import TableCell from './CustomTableCell'
 import TrendingUp from './TrendingUp'
 import TrendingDown from './TrendingDown'
 import TrendingFlat from './TrendingFlat'
-import * as actions from '../actions'
+import { actions as ThemeActions } from '../redux/theme'
 
 const drawerWidth = 550
 
@@ -457,6 +457,6 @@ const mapStateToProps = state => ({
   darkMode: state.theme.darkMode
 })
 
-export default connect(mapStateToProps, actions)(
+export default connect(mapStateToProps, ThemeActions)(
   withRoot(withStyles(styles, { withTheme: true })(Index))
 )
