@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import classNames from 'classnames';
+import classNames from 'classnames'
+import { connect } from 'react-redux'
 import { withStyles } from 'material-ui/styles'
 import AppBar from 'material-ui/AppBar'
 import Toolbar from 'material-ui/Toolbar'
@@ -8,21 +9,21 @@ import Typography from 'material-ui/Typography'
 import Button from 'material-ui/Button'
 import IconButton from 'material-ui/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
-import AddIcon from '@material-ui/icons/Add';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import FlashOnIcon from '@material-ui/icons/FlashOn';
-import Checkbox from 'material-ui/Checkbox';
+import AddIcon from '@material-ui/icons/Add'
+import ChevronRightIcon from '@material-ui/icons/ChevronRight'
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
+import FlashOnIcon from '@material-ui/icons/FlashOn'
+import Checkbox from 'material-ui/Checkbox'
 import Table, { TableBody, TableHead, TableRow } from 'material-ui/Table'
 import Paper from 'material-ui/Paper'
 import Card, { CardActions, CardContent } from 'material-ui/Card'
 import Grid from 'material-ui/Grid'
-import Drawer from 'material-ui/Drawer';
-import List from 'material-ui/List';
-import Divider from 'material-ui/Divider';
-import Modal from 'material-ui/Modal';
-import Tooltip from 'material-ui/Tooltip';
-import Switch from 'material-ui/Switch';
+import Drawer from 'material-ui/Drawer'
+import List from 'material-ui/List'
+import Divider from 'material-ui/Divider'
+import Modal from 'material-ui/Modal'
+import Tooltip from 'material-ui/Tooltip'
+import Switch from 'material-ui/Switch'
 import moment from 'moment'
 
 import * as data from './data'
@@ -35,8 +36,9 @@ import TableCell from './CustomTableCell'
 import TrendingUp from './TrendingUp'
 import TrendingDown from './TrendingDown'
 import TrendingFlat from './TrendingFlat'
+import * as actions from '../actions'
 
-const drawerWidth = 550;
+const drawerWidth = 550
 
 const styles = theme => ({
   root: {
@@ -165,22 +167,21 @@ const inlineStyles = {
 }
 
 class Index extends React.Component {
-  state = {
-    openModal: false,
-    openDrawer: true,
-    darkMode: true,
+  constructor(props) {
+    super(props)
+    this.state = {
+      openModal: false,
+      openDrawer: true,
+    }
   }
 
   handleModalClose = () => this.setState({ openModal: false })
   handleModalOpen = () => this.setState({ openModal: true })
   handleDrawerClose = () => this.setState({ openDrawer: false })
   handleDrawerOpen = () => this.setState({ openDrawer: true })
-  handleChange = name => event => {
-    this.setState({ [name]: event.target.checked });
-  };
 
   render() {
-    const { classes, theme } = this.props
+    const { classes, theme, darkMode } = this.props
     const { openModal, openDrawer } = this.state
 
     return (
@@ -197,8 +198,8 @@ class Index extends React.Component {
             </Typography>
             <Tooltip id="tooltip-darkmode" title="Dark Mode">
               <Switch
-                checked={this.state.darkMode}
-                onChange={this.handleChange('darkMode')}
+                checked={darkMode}
+                onChange={() => this.props.toggleTheme()}
                 value="darkMode"
               />
             </Tooltip>
@@ -457,4 +458,10 @@ Index.propTypes = {
   classes: PropTypes.object.isRequired,
 }
 
-export default withRoot(withStyles(styles, { withTheme: true })(Index))
+const mapStateToProps = state => ({
+  darkMode: state.theme.darkMode
+})
+
+export default connect(mapStateToProps, actions)(
+  withRoot(withStyles(styles, { withTheme: true })(Index))
+)
