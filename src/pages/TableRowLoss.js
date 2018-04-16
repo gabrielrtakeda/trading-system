@@ -1,7 +1,5 @@
-import React from 'react'
 import { withStyles } from 'material-ui/styles'
 import { TableRow } from 'material-ui/Table'
-import purple from 'material-ui/colors/purple'
 
 export default withStyles(theme => ({
   root: {
