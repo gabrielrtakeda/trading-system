@@ -4,7 +4,6 @@ import purple from 'material-ui/colors/purple'
 import orange from 'material-ui/colors/orange'
 import grey from 'material-ui/colors/grey'
 import lightGreen from 'material-ui/colors/lightGreen'
-import green from 'material-ui/colors/green'
 import CssBaseline from 'material-ui/CssBaseline'
 
 // A theme with custom primary and secondary color.
@@ -31,12 +30,13 @@ const dark = createMuiTheme({
     success: {
       light: lightGreen[700],
       main: lightGreen[800],
-      dark: green[900],
+      dark: lightGreen[900],
     },
   },
 })
 const light = createMuiTheme({
   palette: {
+    type: 'light',
     error: {
       accent: purple['A400'],
       light: purple[200],
@@ -46,7 +46,7 @@ const light = createMuiTheme({
     success: {
       light: lightGreen[200],
       main: lightGreen[300],
-      dark: green[400],
+      dark: lightGreen[400],
     },
   },
 })

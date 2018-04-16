@@ -8,7 +8,9 @@ export default withStyles(theme => ({
   },
   hover: {
     '&$hover:hover': {
-      backgroundColor: theme.palette.error.light
+      backgroundColor: theme.palette.type === 'dark' ?
+        theme.palette.error.light :
+        theme.palette.error.dark
     },
   },
 }))(TableRow)

@@ -171,11 +171,11 @@ const inlineStyles = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
   },
-  cellHighlight: {
-    backgroundColor: 'rgba(255, 255, 255, .08)',
+  cellHighlight: theme => ({
+    backgroundColor: `rgba(${theme.type === 'dark' ? '255,255,255' : '0,0,0'}, .08)`,
     textAlign: 'right',
     borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
-  },
+  }),
 }
 
 class Index extends React.Component {
@@ -432,7 +432,9 @@ class Index extends React.Component {
                         <TableRow className={classes.row} key={i} hover>
                           <TableCell numeric>{i + 1}</TableCell>
                           <TableCell numeric>{n.perc}%</TableCell>
-                          <TableCell numeric style={inlineStyles.cellHighlight}>{currency.format(n.invest)}</TableCell>
+                          <TableCell numeric style={inlineStyles.cellHighlight(theme)}>
+                            {currency.format(n.invest)}
+                          </TableCell>
                           <TableCell numeric>{currency.format(n.gain)}</TableCell>
                         </TableRow>
                       )
