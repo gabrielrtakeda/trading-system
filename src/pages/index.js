@@ -28,7 +28,9 @@ import Switch from 'material-ui/Switch'
 import TextField from 'material-ui/TextField'
 import moment from 'moment'
 
-import * as data from './data'
+import simulation from '../services/simulation'
+import { actions as ThemeActions } from '../redux/theme'
+import { actions as TradesActions } from '../redux/trades'
 import currency from './currency'
 import withRoot from '../withRoot'
 import TableRowLoss from './TableRowLoss'
@@ -37,8 +39,6 @@ import TableCell from './CustomTableCell'
 import TrendingUp from './TrendingUp'
 import TrendingDown from './TrendingDown'
 import TrendingFlat from './TrendingFlat'
-import { actions as ThemeActions } from '../redux/theme'
-import { actions as TradesActions } from '../redux/trades'
 
 const drawerWidth = 550
 
@@ -489,13 +489,13 @@ class Index extends React.Component {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {data.simulations(81).map((n, i) => {
+                    {simulation(19, 0.80, 385.44).map((n, i) => {
                       return (
                         <TableRow className={classes.row} key={i} hover>
                           <TableCell numeric>{i + 1}</TableCell>
-                          <TableCell numeric>{n.perc}%</TableCell>
+                          <TableCell numeric>{0.80 * 100}%</TableCell>
                           <TableCell numeric style={inlineStyles.cellHighlight(theme)}>
-                            {currency.format(n.invest)}
+                            {currency.format(n.investiment)}
                           </TableCell>
                           <TableCell numeric>{currency.format(n.gain)}</TableCell>
                         </TableRow>
