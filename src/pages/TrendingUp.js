@@ -1,16 +1,25 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import classNames from 'classnames'
 import { withStyles } from 'material-ui/styles'
 import TrendingUp from '@material-ui/icons/TrendingUp'
 
 const styles = theme => ({
   icon: {
-    fill: theme.palette.secondary.main,
+    fill: theme.palette.success.light,
+  },
+  mono: {
+    fill: theme.palette.type === 'dark' ?
+      theme.palette.common.white :
+      theme.palette.common.black,
   },
 })
 
-const ClassNames = ({ classes }) => (
-  <TrendingUp className={classes.icon} />
+const ClassNames = ({ classes, monochrome, className }) => (
+  <TrendingUp className={classNames(className, {
+    [classes.icon]: !monochrome,
+    [classes.mono]: monochrome
+  })} />
 )
 
 ClassNames.propTypes = {

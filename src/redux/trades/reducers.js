@@ -15,16 +15,52 @@ const dbState = (
 
 const initialState = dbState || [{
   id: shortid.generate(),
-  hand: 3,
+  hand: 6,
   asset: 'EUR/USD',
   incomePercentual: 0.78,
   investiment: 385.44,
   result: 666.08,
   gain: 300.64,
   retainGain: 180.39,
-  status: 'trading', // ['trading', 'gain', 'loss']
+  status: 'trading', // ['trading', 'gain', 'loss', 'doji']
   createdAt: now,
   updatedAt: now,
+},{
+  id: shortid.generate(),
+  hand: 5,
+  asset: 'EUR/USD',
+  incomePercentual: 0.78,
+  investiment: 385.44,
+  result: 666.08,
+  gain: 300.64,
+  retainGain: 180.39,
+  status: 'trading', // ['trading', 'gain', 'loss', 'doji']
+  createdAt: now,
+  updatedAt: now,
+},{
+  id: shortid.generate(),
+  hand: 4,
+  asset: 'EUR/USD',
+  incomePercentual: 0.78,
+  investiment: 385.44,
+  result: 666.08,
+  gain: 300.64,
+  retainGain: 180.39,
+  status: 'trading', // ['trading', 'gain', 'loss', 'doji']
+  createdAt: now,
+  updatedAt: now,
+}, {
+  id: shortid.generate(),
+  hand: 3,
+  asset: 'EUR/USD',
+  incomePercentual: 0.78,
+  investiment: 385.44,
+  result: 686.08,
+  gain: 300.64,
+  retainGain: 180.39,
+  status: 'gain', // ['trading', 'gain', 'loss', 'doji']
+  createdAt: new Date(now - 1 * 1000 * 60),
+  updatedAt: new Date(now - 1 * 1000 * 60),
 }, {
   id: shortid.generate(),
   hand: 2,
@@ -34,9 +70,9 @@ const initialState = dbState || [{
   result: 686.08,
   gain: 300.64,
   retainGain: 180.39,
-  status: 'gain', // ['trading', 'gain', 'loss']
-  createdAt: new Date(now - 1 * 1000 * 60),
-  updatedAt: new Date(now - 1 * 1000 * 60),
+  status: 'loss', // ['trading', 'gain', 'loss', 'doji']
+  createdAt: new Date(now - 2 * 1000 * 60),
+  updatedAt: new Date(now - 2 * 1000 * 60),
 }, {
   id: shortid.generate(),
   hand: 1,
@@ -46,9 +82,9 @@ const initialState = dbState || [{
   result: 686.08,
   gain: 300.64,
   retainGain: 180.39,
-  status: 'loss', // ['trading', 'gain', 'loss']
-  createdAt: new Date(now - 2 * 1000 * 60),
-  updatedAt: new Date(now - 2 * 1000 * 60),
+  status: 'doji', // ['trading', 'gain', 'loss', 'doji']
+  createdAt: new Date(now - 3 * 1000 * 60),
+  updatedAt: new Date(now - 3 * 1000 * 60),
 }, {
   id: shortid.generate(),
   hand: 1,
@@ -58,7 +94,7 @@ const initialState = dbState || [{
   result: 555.08,
   gain: 300.64,
   retainGain: 180.39,
-  status: 'trading', // ['trading', 'gain', 'loss']
+  status: 'trading', // ['trading', 'gain', 'loss', 'doji']
   createdAt: new Date(now - 1 * 1000 * 60 * 60 * 24),
   updatedAt: new Date(now - 1 * 1000 * 60 * 60 * 24),
 }]
@@ -69,6 +105,13 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case 'ADD_TRADE':
       return [...state, action.payload]
+
+    case 'CHANGE_TRADE_STATUS':
+      return state.map(trade => (
+        trade.id === action.payload.id ?
+          action.payload :
+          trade
+      ))
 
     default:
       return state

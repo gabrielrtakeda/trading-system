@@ -17,6 +17,20 @@ const addTrade = trade => (dispatch, getState, { db }) => {
   return tradeWithId
 }
 
+const changeTradeStatus = (id, status) => (dispatch, getState, { db }) => {
+  const tradeWithNewStatus = (
+    db.get(name)
+      .find({ id })
+      .assign({ status })
+      .write()
+  )
+
+  dispatch(createAction('CHANGE_TRADE_STATUS', tradeWithNewStatus))
+
+  return tradeWithNewStatus
+}
+
 export default {
-  toggleTheme,
+  addTrade,
+  changeTradeStatus,
 }

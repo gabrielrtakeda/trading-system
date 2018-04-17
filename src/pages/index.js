@@ -13,6 +13,9 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight'
 import FlashOnIcon from '@material-ui/icons/FlashOn'
 import Send from '@material-ui/icons/Send'
 import Delete from '@material-ui/icons/Delete'
+import ThumbUp from '@material-ui/icons/ThumbUp'
+import ThumbDown from '@material-ui/icons/ThumbDown'
+import ChangeHistory from '@material-ui/icons/ChangeHistory'
 import Table, { TableBody, TableHead, TableRow } from 'material-ui/Table'
 import Paper from 'material-ui/Paper'
 import Card, { CardActions, CardContent } from 'material-ui/Card'
@@ -35,6 +38,7 @@ import TrendingUp from './TrendingUp'
 import TrendingDown from './TrendingDown'
 import TrendingFlat from './TrendingFlat'
 import { actions as ThemeActions } from '../redux/theme'
+import { actions as TradesActions } from '../redux/trades'
 
 const drawerWidth = 550
 
@@ -76,9 +80,9 @@ const styles = theme => ({
     flex: '1 1 100%',
   },
   fab: {
-    position: 'absolute',
+    position: 'fixed',
     bottom: theme.spacing.unit * 2,
-    left: -(theme.spacing.unit * 9),
+    left: theme.spacing.unit * 2,
     zIndex: theme.zIndex.drawer + 1,
   },
   toolbar: theme.mixins.toolbar,
@@ -146,6 +150,9 @@ const styles = theme => ({
       duration: theme.transitions.duration.enteringScreen,
     }),
   },
+  contentContainer: {
+    paddingBottom: theme.spacing.unit * 8,
+  },
   hide: {
     display: 'none',
   },
@@ -162,6 +169,17 @@ const styles = theme => ({
   },
   actionButtons: {
     marginTop: theme.spacing.unit * 3,
+  },
+  icon: {
+    paddingLeft: theme.spacing.unit / 2,
+    paddingRight: theme.spacing.unit / 2,
+  },
+  cellButton: {
+    minWidth: 0,
+    padding: theme.spacing.unit,
+  },
+  center: {
+    textAlign: 'center',
   },
 })
 
@@ -238,7 +256,7 @@ class Index extends React.Component {
           })}
         >
           <div className={classes.toolbar} />
-          <Grid container spacing={24}>
+          <Grid className={classes.contentContainer} container spacing={24}>
             <Grid item xs={12}>
               <Grid container spacing={24} justify='center'>
                 <Grid item xs={4}>
@@ -363,18 +381,52 @@ class Index extends React.Component {
                           <TableCell numeric>Investimento</TableCell>
                           <TableCell numeric>Lucro O.P</TableCell>
                           <TableCell numeric>L/Meio</TableCell>
-                          <TableCell>Status</TableCell>
-                          <TableCell>Criado em</TableCell>
+                          <TableCell className={classes.center}>Status</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
                         {trades.sort((a, b) => b.updatedAt - a.updatedAt).map(n => {
-                          const StatusesRow = {
-                            trading: TableRow,
-                            gain: TableRowGain,
-                            loss: TableRowLoss,
+                          let TableRowColored = TableRow
+                          let StatusIcon = props => (
+                            <React.Fragment>
+                              <Tooltip id={`tooltip-gain-${n.id}`} title="Gain">
+                                <Button
+                                  className={classes.cellButton}
+                                  onClick={() => this.props.changeTradeStatus(n.id, 'gain')}
+                                >
+                                  <ThumbUp {...props} />
+                                </Button>
+                              </Tooltip>
+                              <Tooltip id={`tooltip-loss-${n.id}`} title="Loss">
+                                <Button
+                                  className={classes.cellButton}
+                                  onClick={() => this.props.changeTradeStatus(n.id, 'loss')}
+                                >
+                                  <ThumbDown {...props} />
+                                </Button>
+                              </Tooltip>
+                              <Tooltip id={`tooltip-doji-${n.id}`} title="Doji">
+                                <Button
+                                  className={classes.cellButton}
+                                  onClick={() => this.props.changeTradeStatus(n.id, 'doji')}
+                                >
+                                  <ChangeHistory {...props} />
+                                </Button>
+                              </Tooltip>
+                            </React.Fragment>
+                          )
+                          if (n.status === 'gain') {
+                            TableRowColored = TableRowGain
+                            StatusIcon = TrendingUp
                           }
-                          const TableRowColored = StatusesRow[n.status]
+                          if (n.status === 'loss') {
+                            TableRowColored = TableRowLoss
+                            StatusIcon = TrendingDown
+                          }
+                          if (n.status === 'doji') {
+                            StatusIcon = TrendingFlat
+                          }
+
                           return (
                             <TableRowColored key={n.id} hover>
                               <TableCell numeric>{n.hand}</TableCell>
@@ -383,8 +435,9 @@ class Index extends React.Component {
                               <TableCell numeric>{currency.format(n.investiment)}</TableCell>
                               <TableCell numeric>{currency.format(n.gain)}</TableCell>
                               <TableCell numeric>{currency.format(n.retainGain)}</TableCell>
-                              <TableCell>{n.status}</TableCell>
-                              <TableCell>{moment(n.createdAt).format('DD/MM/YYYY HH:mm:ss')}</TableCell>
+                              <TableCell className={classes.center}>
+                                <StatusIcon monochrome='true' className={classes.icon} />
+                              </TableCell>
                             </TableRowColored>
                           )
                         })}
@@ -395,6 +448,15 @@ class Index extends React.Component {
               </Grid>
             </Grid>
           </Grid>
+
+          <Button
+            variant="fab"
+            className={classes.fab}
+            color='secondary'
+            onClick={this.handleModalOpen}
+          >
+            <AddIcon style={{ fill: theme.palette.common.white }} />
+          </Button>
         </main>
 
         <Drawer
@@ -444,15 +506,6 @@ class Index extends React.Component {
               </Paper>
             </div>
           </Grid>
-
-          <Button
-            variant="fab"
-            className={classes.fab}
-            color='secondary'
-            onClick={this.handleModalOpen}
-          >
-            <AddIcon style={{ fill: theme.palette.common.white }} />
-          </Button>
         </Drawer>
 
         <Modal
@@ -531,6 +584,11 @@ const mapStateToProps = state => ({
   trades: state.trades,
 })
 
-export default connect(mapStateToProps, ThemeActions)(
+const mapDispatchToProps = {
+  ...ThemeActions,
+  ...TradesActions,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(
   withRoot(withStyles(styles, { withTheme: true })(Index))
 )
