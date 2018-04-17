@@ -80,9 +80,9 @@ const styles = theme => ({
     flex: '1 1 100%',
   },
   fab: {
-    position: 'fixed',
+    position: 'absolute',
     bottom: theme.spacing.unit * 2,
-    left: theme.spacing.unit * 2,
+    left: -(theme.spacing.unit * 9),
     zIndex: theme.zIndex.drawer + 1,
   },
   toolbar: theme.mixins.toolbar,
@@ -190,7 +190,9 @@ const inlineStyles = {
     transform: 'translate(-50%, -50%)',
   },
   cellHighlight: theme => ({
-    backgroundColor: `rgba(${theme.type === 'dark' ? '255,255,255' : '0,0,0'}, .08)`,
+    backgroundColor: theme.palette.type === 'dark' ?
+      'rgba(255, 255, 255, .08)' :
+      'rgba(0, 0, 0, .025)',
     textAlign: 'right',
     borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
   }),
@@ -377,10 +379,9 @@ class Index extends React.Component {
                         <TableRow>
                           <TableCell numeric>Mão</TableCell>
                           <TableCell>Ativo</TableCell>
-                          <TableCell numeric>% O.P</TableCell>
+                          <TableCell numeric>Rendimento</TableCell>
                           <TableCell numeric>Investimento</TableCell>
-                          <TableCell numeric>Lucro O.P</TableCell>
-                          <TableCell numeric>L/Meio</TableCell>
+                          <TableCell numeric>Lucro</TableCell>
                           <TableCell className={classes.center}>Status</TableCell>
                         </TableRow>
                       </TableHead>
@@ -389,7 +390,7 @@ class Index extends React.Component {
                           let TableRowColored = TableRow
                           let StatusIcon = props => (
                             <React.Fragment>
-                              <Tooltip id={`tooltip-gain-${n.id}`} title="Gain">
+                              <Tooltip id={`tooltip-gain-${n.id}`} title="Gain" placement="top">
                                 <Button
                                   className={classes.cellButton}
                                   onClick={() => this.props.changeTradeStatus(n.id, 'gain')}
@@ -397,7 +398,7 @@ class Index extends React.Component {
                                   <ThumbUp {...props} />
                                 </Button>
                               </Tooltip>
-                              <Tooltip id={`tooltip-loss-${n.id}`} title="Loss">
+                              <Tooltip id={`tooltip-loss-${n.id}`} title="Loss" placement="top">
                                 <Button
                                   className={classes.cellButton}
                                   onClick={() => this.props.changeTradeStatus(n.id, 'loss')}
@@ -405,7 +406,7 @@ class Index extends React.Component {
                                   <ThumbDown {...props} />
                                 </Button>
                               </Tooltip>
-                              <Tooltip id={`tooltip-doji-${n.id}`} title="Doji">
+                              <Tooltip id={`tooltip-doji-${n.id}`} title="Doji" placement="top">
                                 <Button
                                   className={classes.cellButton}
                                   onClick={() => this.props.changeTradeStatus(n.id, 'doji')}
@@ -434,7 +435,6 @@ class Index extends React.Component {
                               <TableCell numeric>{n.incomePercentual * 100}%</TableCell>
                               <TableCell numeric>{currency.format(n.investiment)}</TableCell>
                               <TableCell numeric>{currency.format(n.gain)}</TableCell>
-                              <TableCell numeric>{currency.format(n.retainGain)}</TableCell>
                               <TableCell className={classes.center}>
                                 <StatusIcon monochrome='true' className={classes.icon} />
                               </TableCell>
@@ -448,15 +448,6 @@ class Index extends React.Component {
               </Grid>
             </Grid>
           </Grid>
-
-          <Button
-            variant="fab"
-            className={classes.fab}
-            color='secondary'
-            onClick={this.handleModalOpen}
-          >
-            <AddIcon style={{ fill: theme.palette.common.white }} />
-          </Button>
         </main>
 
         <Drawer
@@ -483,7 +474,7 @@ class Index extends React.Component {
                   <TableHead>
                     <TableRow>
                       <TableCell numeric>Mão</TableCell>
-                      <TableCell numeric>% O.P</TableCell>
+                      <TableCell numeric>Rendimento</TableCell>
                       <TableCell numeric>Investimento</TableCell>
                       <TableCell numeric>Lucro</TableCell>
                     </TableRow>
@@ -506,6 +497,17 @@ class Index extends React.Component {
               </Paper>
             </div>
           </Grid>
+
+          <Tooltip id="tooltip-fab" title="Adicionar Operação" placement="left">
+            <Button
+              variant="fab"
+              className={classes.fab}
+              color='secondary'
+              onClick={this.handleModalOpen}
+            >
+              <AddIcon style={{ fill: theme.palette.common.white }} />
+            </Button>
+          </Tooltip>
         </Drawer>
 
         <Modal

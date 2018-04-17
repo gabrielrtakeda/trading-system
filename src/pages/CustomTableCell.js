@@ -6,7 +6,9 @@ export default withStyles(theme => ({
   head: {
     backgroundColor: theme.palette.type === 'dark' ?
       theme.palette.common.black :
-      grey[800],
-    color: theme.palette.common.white,
+      grey[300],
+    color: theme.palette.type === 'dark' ?
+      theme.palette.common.white :
+      theme.palette.common.black,
   }
 }))(TableCell)

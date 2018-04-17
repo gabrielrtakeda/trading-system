@@ -6,7 +6,7 @@ import TrendingUp from '@material-ui/icons/TrendingUp'
 
 const styles = theme => ({
   icon: {
-    fill: theme.palette.success.light,
+    fill: theme.palette.success.accent,
   },
   mono: {
     fill: theme.palette.type === 'dark' ?

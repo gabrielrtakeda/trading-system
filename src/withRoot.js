@@ -28,6 +28,7 @@ const dark = createMuiTheme({
       dark: purple[900],
     },
     success: {
+      accent: lightGreen['A700'],
       light: lightGreen[700],
       main: lightGreen[800],
       dark: lightGreen[900],
@@ -37,16 +38,27 @@ const dark = createMuiTheme({
 const light = createMuiTheme({
   palette: {
     type: 'light',
+    primary: {
+      light: grey[800],
+      main: grey[900],
+      dark: grey['100%'],
+    },
+    secondary: {
+      light: orange[400],
+      main: orange[600],
+      dark: orange[700],
+    },
     error: {
       accent: purple['A400'],
-      light: purple[200],
-      main: purple[300],
-      dark: purple[400],
+      light: purple[50],
+      main: purple[100],
+      dark: purple[200],
     },
     success: {
-      light: lightGreen[200],
-      main: lightGreen[300],
-      dark: lightGreen[400],
+      accent: lightGreen['A700'],
+      light: lightGreen[50],
+      main: lightGreen[100],
+      dark: lightGreen[200],
     },
   },
 })

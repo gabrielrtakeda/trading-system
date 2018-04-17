@@ -19,9 +19,7 @@ const initialState = dbState || [{
   asset: 'EUR/USD',
   incomePercentual: 0.78,
   investiment: 385.44,
-  result: 666.08,
   gain: 300.64,
-  retainGain: 180.39,
   status: 'trading', // ['trading', 'gain', 'loss', 'doji']
   createdAt: now,
   updatedAt: now,
@@ -31,9 +29,7 @@ const initialState = dbState || [{
   asset: 'EUR/USD',
   incomePercentual: 0.78,
   investiment: 385.44,
-  result: 666.08,
   gain: 300.64,
-  retainGain: 180.39,
   status: 'trading', // ['trading', 'gain', 'loss', 'doji']
   createdAt: now,
   updatedAt: now,
@@ -43,9 +39,7 @@ const initialState = dbState || [{
   asset: 'EUR/USD',
   incomePercentual: 0.78,
   investiment: 385.44,
-  result: 666.08,
   gain: 300.64,
-  retainGain: 180.39,
   status: 'trading', // ['trading', 'gain', 'loss', 'doji']
   createdAt: now,
   updatedAt: now,
@@ -55,9 +49,7 @@ const initialState = dbState || [{
   asset: 'EUR/USD',
   incomePercentual: 0.78,
   investiment: 385.44,
-  result: 686.08,
   gain: 300.64,
-  retainGain: 180.39,
   status: 'gain', // ['trading', 'gain', 'loss', 'doji']
   createdAt: new Date(now - 1 * 1000 * 60),
   updatedAt: new Date(now - 1 * 1000 * 60),
@@ -67,9 +59,7 @@ const initialState = dbState || [{
   asset: 'EUR/USD',
   incomePercentual: 0.78,
   investiment: 385.44,
-  result: 686.08,
   gain: 300.64,
-  retainGain: 180.39,
   status: 'loss', // ['trading', 'gain', 'loss', 'doji']
   createdAt: new Date(now - 2 * 1000 * 60),
   updatedAt: new Date(now - 2 * 1000 * 60),
@@ -79,9 +69,7 @@ const initialState = dbState || [{
   asset: 'EUR/USD',
   incomePercentual: 0.78,
   investiment: 385.44,
-  result: 686.08,
   gain: 300.64,
-  retainGain: 180.39,
   status: 'doji', // ['trading', 'gain', 'loss', 'doji']
   createdAt: new Date(now - 3 * 1000 * 60),
   updatedAt: new Date(now - 3 * 1000 * 60),
@@ -91,9 +79,7 @@ const initialState = dbState || [{
   asset: 'EUR/USD',
   incomePercentual: 0.78,
   investiment: 385.44,
-  result: 555.08,
   gain: 300.64,
-  retainGain: 180.39,
   status: 'trading', // ['trading', 'gain', 'loss', 'doji']
   createdAt: new Date(now - 1 * 1000 * 60 * 60 * 24),
   updatedAt: new Date(now - 1 * 1000 * 60 * 60 * 24),
