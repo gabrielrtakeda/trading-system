@@ -6,21 +6,15 @@ import { connect } from 'react-redux'
 import { withStyles } from 'material-ui/styles'
 import Typography from 'material-ui/Typography'
 import Button from 'material-ui/Button'
-import IconButton from 'material-ui/IconButton'
-import AddIcon from '@material-ui/icons/Add'
-import ChevronRightIcon from '@material-ui/icons/ChevronRight'
 import ThumbUp from '@material-ui/icons/ThumbUp'
 import ThumbDown from '@material-ui/icons/ThumbDown'
 import ChangeHistory from '@material-ui/icons/ChangeHistory'
 import Table, { TableBody, TableHead, TableRow } from 'material-ui/Table'
 import Paper from 'material-ui/Paper'
 import Grid from 'material-ui/Grid'
-import Drawer from 'material-ui/Drawer'
-import Divider from 'material-ui/Divider'
 import Tooltip from 'material-ui/Tooltip'
 import moment from 'moment'
 
-import simulation from '../services/simulation'
 import { actions as TradesActions } from '../redux/trades'
 import currency from './currency'
 import withRoot from '../withRoot'
@@ -33,6 +27,7 @@ import TrendingFlat from './TrendingFlat'
 import TradeFormModal from './TradeFormModal'
 import DataCard from './DataCard'
 import AppBar from './AppBar'
+import DrawerRight from './DrawerRight'
 
 const styles = theme => ({
   root: {
@@ -42,14 +37,8 @@ const styles = theme => ({
     position: 'relative',
     display: 'flex',
   },
-  padding: {
-    padding: 16
-  },
   table: {
     minWidth: 700,
-  },
-  row: {
-    backgroundColor: theme.palette.background.default,
   },
   tableTitle: {
     marginBottom: 16
@@ -57,27 +46,7 @@ const styles = theme => ({
   spacer: {
     flex: '1 1 100%',
   },
-  fab: {
-    position: 'absolute',
-    bottom: theme.spacing.unit * 2,
-    left: -(theme.spacing.unit * 9),
-    zIndex: theme.zIndex.drawer + 1,
-  },
   toolbar: theme.mixins.toolbar,
-  drawerPaper: {
-    position: 'relative',
-    color: theme.palette.common.white,
-    zIndex: theme.zIndex.modal + 1,
-    overflow: 'inherit',
-    width: theme.spacing.drawerWidth,
-  },
-  drawerHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: '0 8px',
-    ...theme.mixins.toolbar,
-  },
   content: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.default,
@@ -116,21 +85,6 @@ const styles = theme => ({
   },
 })
 
-const inlineStyles = {
-  modal: {
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-  },
-  cellHighlight: theme => ({
-    backgroundColor: theme.palette.type === 'dark' ?
-      'rgba(255, 255, 255, .08)' :
-      'rgba(0, 0, 0, .025)',
-    textAlign: 'right',
-    borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
-  }),
-}
-
 class Index extends React.Component {
   constructor(props) {
     super(props)
@@ -146,7 +100,7 @@ class Index extends React.Component {
   handleDrawerOpen = () => this.setState({ openDrawer: true })
 
   render() {
-    const { classes, theme, trades } = this.props
+    const { classes, trades } = this.props
     const { openModal, openDrawer } = this.state
 
     return (
@@ -308,65 +262,11 @@ class Index extends React.Component {
           </Grid>
         </main>
 
-        <Drawer
-          variant="persistent"
-          anchor='right'
+        <DrawerRight
           open={openDrawer}
-          classes={{ paper: classes.drawerPaper }}
-        >
-          <div className={classes.drawerHeader}>
-            <IconButton onClick={this.handleDrawerClose}>
-              <ChevronRightIcon />
-            </IconButton>
-          </div>
-          <Divider />
-          <Grid item>
-            <div className={classes.padding}>
-              <div className={classes.tableTitle}>
-                <Typography variant="title">
-                  Simulação
-                </Typography>
-              </div>
-              <Paper>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell numeric>Mão</TableCell>
-                      <TableCell numeric>Rendimento</TableCell>
-                      <TableCell numeric>Investimento</TableCell>
-                      <TableCell numeric>Lucro</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {simulation(19, 0.80, 385.44).map((n, i) => {
-                      return (
-                        <TableRow className={classes.row} key={i} hover>
-                          <TableCell numeric>{i + 1}</TableCell>
-                          <TableCell numeric>{0.80 * 100}%</TableCell>
-                          <TableCell numeric style={inlineStyles.cellHighlight(theme)}>
-                            {currency.format(n.investiment)}
-                          </TableCell>
-                          <TableCell numeric>{currency.format(n.gain)}</TableCell>
-                        </TableRow>
-                      )
-                    })}
-                  </TableBody>
-                </Table>
-              </Paper>
-            </div>
-          </Grid>
-
-          <Tooltip id="tooltip-fab" title="Adicionar Operação" placement="left">
-            <Button
-              variant="fab"
-              className={classes.fab}
-              color='secondary'
-              onClick={this.handleModalOpen}
-            >
-              <AddIcon style={{ fill: theme.palette.common.white }} />
-            </Button>
-          </Tooltip>
-        </Drawer>
+          onDrawerClose={this.handleDrawerClose}
+          onModalOpen={this.handleModalOpen}
+        />
 
         <TradeFormModal
           open={openModal}
@@ -390,5 +290,5 @@ const mapDispatchToProps = {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(
-  withRoot(withStyles(styles, { withTheme: true })(Index))
+  withRoot(withStyles(styles)(Index))
 )
