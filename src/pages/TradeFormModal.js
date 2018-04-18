@@ -1,5 +1,6 @@
 /* eslint-disable react/jsx-no-duplicate-props */
 import React from 'react'
+import { connect } from 'react-redux'
 import { withStyles } from 'material-ui/styles'
 import { InputAdornment } from 'material-ui/Input'
 import Modal from 'material-ui/Modal'
@@ -11,6 +12,7 @@ import Delete from '@material-ui/icons/Delete'
 import Send from '@material-ui/icons/Send'
 
 import Autocomplete from './Autocomplete'
+import { actions as TradesActions } from '../redux/trades'
 
 const styles = theme => ({
   actionButtons: {
@@ -54,8 +56,26 @@ const inlineStyles = {
 }
 
 class TradeFormModal extends React.Component {
+  state = {
+    trade: {
+      asset: undefined,
+      incomePercentual: undefined,
+      investiment: undefined,
+    },
+  }
+
+  handleChange = name => value => {
+    this.setState({
+      trade: {
+        ...this.state.trade,
+        [name]: value,
+      }
+    })
+  }
+
   render () {
-    const { classes, open, onClose } = this.props
+    const { classes, open, onClose, addTrade } = this.props
+
     return (
       <Modal
         aria-labelledby="simple-modal-title"
@@ -72,16 +92,20 @@ class TradeFormModal extends React.Component {
           <Typography variant="subheading" id="simple-modal-description">
             Informe os dados para cadastro de uma nova operação.
           </Typography>
+
           <form
             className={classes.formContainer}
             onSubmit={e => {
               e.preventDefault()
+              addTrade(this.state.trade)
+              onClose()
             }}
           >
             <Autocomplete
               fullWidth
               label="Ativo"
               helperText="Ativo utilizado para a operação."
+              onChange={this.handleChange('asset')}
             />
             <TextField
               fullWidth
@@ -91,6 +115,7 @@ class TradeFormModal extends React.Component {
               className={classes.textField}
               helperText="Porcentagem de rendimento do ativo."
               type="number"
+              onChange={e => this.handleChange('incomePercentual')(Number(e.target.value) / 100)}
               inputProps={{
                 step: "1",
                 min: "0",
@@ -108,6 +133,7 @@ class TradeFormModal extends React.Component {
               className={classes.textField}
               helperText="Valor a ser investido na operação."
               type='number'
+              onChange={e => this.handleChange('investiment')(Number(e.target.value))}
               inputProps={{
                 step: "0.01"
               }}
@@ -117,21 +143,13 @@ class TradeFormModal extends React.Component {
             />
             <Grid container justify='space-between' className={classes.actionButtons}>
               <Grid item>
-                <Button
-                  variant="raised"
-                  color="primary"
-                  onClick={onClose}
-                >
+                <Button variant="raised" color="primary" onClick={onClose}>
                   Cancel
                   <Delete className={classes.rightIcon} />
                 </Button>
               </Grid>
               <Grid item>
-                <Button
-                  variant="raised"
-                  color="secondary"
-                  type='submit'
-                >
+                <Button variant="raised" color="secondary" type='submit'>
                   Send
                   <Send className={classes.rightIcon} />
                 </Button>
@@ -144,4 +162,4 @@ class TradeFormModal extends React.Component {
   }
 }
 
-export default withStyles(styles)(TradeFormModal)
+export default connect(undefined, TradesActions)(withStyles(styles)(TradeFormModal))

@@ -11,12 +11,9 @@ import TradeFormModal from './TradeFormModal'
 import DrawerRight from './DrawerRight'
 
 class Index extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      openModal: false,
-      openDrawer: true,
-    }
+  state = {
+    openModal: false,
+    openDrawer: true,
   }
 
   handleModalClose = () => this.setState({ openModal: false })

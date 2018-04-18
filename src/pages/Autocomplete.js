@@ -265,7 +265,7 @@ class IntegrationReactSelect extends React.Component {
   }
 
   render() {
-    const { classes, helperText, label, fullWidth } = this.props
+    const { classes, helperText, label, fullWidth, onChange } = this.props
 
     return (
       <div className={classes.inputContainer}>
@@ -274,7 +274,7 @@ class IntegrationReactSelect extends React.Component {
           fullWidth={fullWidth}
           inputComponent={SelectWrapped}
           value={this.state.single}
-          onChange={this.handleChange('single')}
+          onChange={value => { onChange(value); this.handleChange('single')(value) }}
           placeholder={label}
           id="react-select-single"
           inputProps={{

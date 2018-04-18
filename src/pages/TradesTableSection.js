@@ -12,6 +12,7 @@ import ThumbDown from '@material-ui/icons/ThumbDown'
 import ChangeHistory from '@material-ui/icons/ChangeHistory'
 
 import currency from './currency'
+import { suggestions } from './Autocomplete'
 import TableCell from './CustomTableCell'
 import TableRowLoss from './TableRowLoss'
 import TableRowGain from './TableRowGain'
@@ -107,10 +108,14 @@ const TradesTableSection = ({ classes, xs, trades, changeTradeStatus }) => (
                 return (
                   <TableRowColored key={n.id} hover>
                     <TableCell numeric>{n.hand}</TableCell>
-                    <TableCell>{n.asset}</TableCell>
+                    <TableCell>
+                      {suggestions.find(suggest => suggest.value === n.asset).label}
+                    </TableCell>
                     <TableCell numeric>{n.incomePercentual * 100}%</TableCell>
                     <TableCell numeric>{currency.format(n.investiment)}</TableCell>
-                    <TableCell numeric>{currency.format(n.gain)}</TableCell>
+                    <TableCell numeric>
+                      {currency.format(n.investiment * n.incomePercentual)}
+                    </TableCell>
                     <TableCell className={classes.center}>
                       <StatusIcon monochrome='true' className={classes.icon} />
                     </TableCell>

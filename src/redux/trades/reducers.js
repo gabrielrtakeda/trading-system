@@ -16,70 +16,63 @@ const dbState = (
 const initialState = dbState || [{
   id: shortid.generate(),
   hand: 6,
-  asset: 'EUR/USD',
-  incomePercentual: 0.78,
+  asset: 'EURUSD',
+  incomePercentual: 0.80,
   investiment: 385.44,
-  gain: 300.64,
   status: 'trading', // ['trading', 'gain', 'loss', 'doji']
   createdAt: now,
   updatedAt: now,
 },{
   id: shortid.generate(),
   hand: 5,
-  asset: 'EUR/USD',
-  incomePercentual: 0.78,
+  asset: 'EURUSD',
+  incomePercentual: 0.80,
   investiment: 385.44,
-  gain: 300.64,
   status: 'trading', // ['trading', 'gain', 'loss', 'doji']
   createdAt: now,
   updatedAt: now,
 },{
   id: shortid.generate(),
   hand: 4,
-  asset: 'EUR/USD',
-  incomePercentual: 0.78,
+  asset: 'EURUSD',
+  incomePercentual: 0.80,
   investiment: 385.44,
-  gain: 300.64,
   status: 'trading', // ['trading', 'gain', 'loss', 'doji']
   createdAt: now,
   updatedAt: now,
 }, {
   id: shortid.generate(),
   hand: 3,
-  asset: 'EUR/USD',
-  incomePercentual: 0.78,
+  asset: 'EURUSD',
+  incomePercentual: 0.80,
   investiment: 385.44,
-  gain: 300.64,
   status: 'gain', // ['trading', 'gain', 'loss', 'doji']
   createdAt: new Date(now - 1 * 1000 * 60),
   updatedAt: new Date(now - 1 * 1000 * 60),
 }, {
   id: shortid.generate(),
   hand: 2,
-  asset: 'EUR/USD',
-  incomePercentual: 0.78,
+  asset: 'EURUSD',
+  incomePercentual: 0.80,
   investiment: 385.44,
-  gain: 300.64,
   status: 'loss', // ['trading', 'gain', 'loss', 'doji']
   createdAt: new Date(now - 2 * 1000 * 60),
   updatedAt: new Date(now - 2 * 1000 * 60),
 }, {
   id: shortid.generate(),
   hand: 1,
-  asset: 'EUR/USD',
-  incomePercentual: 0.78,
+  asset: 'EURUSD',
+  incomePercentual: 0.80,
   investiment: 385.44,
-  gain: 300.64,
   status: 'doji', // ['trading', 'gain', 'loss', 'doji']
   createdAt: new Date(now - 3 * 1000 * 60),
   updatedAt: new Date(now - 3 * 1000 * 60),
 }, {
   id: shortid.generate(),
   hand: 1,
-  asset: 'EUR/USD',
-  incomePercentual: 0.78,
+  asset: 'EURUSD',
+  incomePercentual: 0.80,
   investiment: 385.44,
-  gain: 300.64,
   status: 'trading', // ['trading', 'gain', 'loss', 'doji']
   createdAt: new Date(now - 1 * 1000 * 60 * 60 * 24),
   updatedAt: new Date(now - 1 * 1000 * 60 * 60 * 24),
@@ -90,7 +83,7 @@ db.defaults({ [name]: initialState }).write()
 export default (state = initialState, action) => {
   switch (action.type) {
     case 'ADD_TRADE':
-      return [...state, action.payload]
+      return [action.payload, ...state]
 
     case 'CHANGE_TRADE_STATUS':
       return state.map(trade => (

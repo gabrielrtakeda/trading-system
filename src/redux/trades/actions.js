@@ -3,8 +3,19 @@ import createAction from '../create-action'
 import name from './.name'
 
 const addTrade = trade => (dispatch, getState, { db }) => {
+  const trades = (
+    db.has(name).value() &&
+    db.get(name)
+      .filter(({ createdAt }) => new Date(createdAt) > new Date().setHours(0,0,0,0))
+      .value()
+  )
+
   const tradeWithId = {
     id: shortid.generate(),
+    hand: trades.length + 1,
+    status: 'trading',
+    createdAt: new Date(),
+    updatedAt: new Date(),
     ...trade
   }
 
