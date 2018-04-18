@@ -1,52 +1,14 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import classNames from 'classnames'
-import { withStyles } from 'material-ui/styles'
-import Grid from 'material-ui/Grid'
 
 import withRoot from '../withRoot'
-import TradeFormModal from './TradeFormModal'
+import AppRoot from './AppRoot'
 import AppBar from './AppBar'
-import DrawerRight from './DrawerRight'
+import AppContent from './AppContent'
 import StaticDataSection from './StaticDataSection'
 import DynamicDataSection from './DynamicDataSection'
 import TradesTableSection from './TradesTableSection'
-
-const styles = theme => ({
-  root: {
-    flexGrow: 1,
-    zIndex: 1,
-    overflow: 'hidden',
-    position: 'relative',
-    display: 'flex',
-  },
-  toolbar: theme.mixins.toolbar,
-  content: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.default,
-    padding: theme.spacing.unit * 3,
-    minWidth: 0,
-    position: 'relative',
-    overflowX: 'hidden',
-    overflowY: 'auto',
-    maxHeight: '100vh',
-    marginRight: -theme.spacing.drawerWidth,
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  contentShift: {
-    marginRight: 0,
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  contentContainer: {
-    paddingBottom: theme.spacing.unit * 8,
-  },
-})
+import TradeFormModal from './TradeFormModal'
+import DrawerRight from './DrawerRight'
 
 class Index extends React.Component {
   constructor(props) {
@@ -63,29 +25,21 @@ class Index extends React.Component {
   handleDrawerOpen = () => this.setState({ openDrawer: true })
 
   render() {
-    const { classes } = this.props
     const { openModal, openDrawer } = this.state
 
     return (
-      <div className={classes.root}>
+      <AppRoot>
         <AppBar
           title='Trading System'
           open={openDrawer}
           onDrawerOpen={this.handleDrawerOpen}
         />
 
-        <main
-          className={classNames(classes.content, {
-            [classes.contentShift]: openDrawer,
-          })}
-        >
-          <div className={classes.toolbar} />
-          <Grid className={classes.contentContainer} container spacing={24}>
-            <StaticDataSection />
-            <DynamicDataSection />
-            <TradesTableSection />
-          </Grid>
-        </main>
+        <AppContent openDrawer={openDrawer}>
+          <StaticDataSection />
+          <DynamicDataSection />
+          <TradesTableSection />
+        </AppContent>
 
         <DrawerRight
           open={openDrawer}
@@ -97,13 +51,9 @@ class Index extends React.Component {
           open={openModal}
           onClose={this.handleModalClose}
         />
-      </div>
+      </AppRoot>
     )
   }
 }
 
-Index.propTypes = {
-  classes: PropTypes.object.isRequired,
-}
-
-export default withRoot(withStyles(styles)(Index))
+export default withRoot(Index)
