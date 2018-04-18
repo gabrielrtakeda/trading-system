@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
-import uuid from 'uuid'
 import { connect } from 'react-redux'
 import { withStyles } from 'material-ui/styles'
 import Typography from 'material-ui/Typography'
@@ -13,7 +12,6 @@ import Table, { TableBody, TableHead, TableRow } from 'material-ui/Table'
 import Paper from 'material-ui/Paper'
 import Grid from 'material-ui/Grid'
 import Tooltip from 'material-ui/Tooltip'
-import moment from 'moment'
 
 import { actions as TradesActions } from '../redux/trades'
 import currency from './currency'
@@ -28,6 +26,7 @@ import TradeFormModal from './TradeFormModal'
 import DataCard from './DataCard'
 import AppBar from './AppBar'
 import DrawerRight from './DrawerRight'
+import DataCardSection from './DataCardSection'
 
 const styles = theme => ({
   root: {
@@ -115,40 +114,9 @@ class Index extends React.Component {
         >
           <div className={classes.toolbar} />
           <Grid className={classes.contentContainer} container spacing={24}>
-            <Grid item xs={12}>
-              <Grid container spacing={24} justify='center'>
-                <Grid item xs={4}>
-                  <DataCard
-                    label='Data de hoje'
-                    content={moment().format('DD/MM/YYYY')}
-                    help={moment().format('dddd')}
-                    ActionButtons={[
-                      <Button key={uuid()} size="small">Iniciar trade</Button>
-                    ]}
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <DataCard
-                    label='Banca Inicial'
-                    content={'$ 10,000.00'}
-                    help='Valor Fixo'
-                    ActionButtons={[
-                      <Button key={uuid()} size="small">Editar valor</Button>
-                    ]}
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <DataCard
-                    label='Percentual de Risco'
-                    content='6% por dia'
-                    help='3 tentativas'
-                    ActionButtons={[
-                      <Button key={uuid()} size="small">Editar valores</Button>
-                    ]}
-                  />
-                </Grid>
-              </Grid>
+            <DataCardSection />
 
+            <Grid item xs={12}>
               <Grid container spacing={24} justify='center'>
                 <Grid item xs={4}>
                   <DataCard
@@ -175,6 +143,9 @@ class Index extends React.Component {
                   />
                 </Grid>
               </Grid>
+            </Grid>
+
+            <Grid item xs={12}>
               <Grid container spacing={24} justify='flex-start'>
                 <Grid item xs={12}>
                   <div className={classes.tableTitle}>
