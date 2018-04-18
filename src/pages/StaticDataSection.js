@@ -5,7 +5,7 @@ import Grid from 'material-ui/Grid'
 import Button from 'material-ui/Button'
 import DataCard from './DataCard'
 
-const DataCardSection = ({ xs }) => (
+const StaticDataSection = ({ xs }) => (
   <Grid item xs={xs}>
     <Grid container spacing={24} justify='center'>
       <Grid item xs={4}>
@@ -42,8 +42,8 @@ const DataCardSection = ({ xs }) => (
   </Grid>
 )
 
-DataCardSection.defaultProps = {
+StaticDataSection.defaultProps = {
   xs: 12,
 }
 
-export default DataCardSection
+export default StaticDataSection
