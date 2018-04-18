@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
+import uuid from 'uuid'
 import { connect } from 'react-redux'
 import { withStyles } from 'material-ui/styles'
 import AppBar from 'material-ui/AppBar'
@@ -16,7 +17,6 @@ import ThumbDown from '@material-ui/icons/ThumbDown'
 import ChangeHistory from '@material-ui/icons/ChangeHistory'
 import Table, { TableBody, TableHead, TableRow } from 'material-ui/Table'
 import Paper from 'material-ui/Paper'
-import Card, { CardActions, CardContent } from 'material-ui/Card'
 import Grid from 'material-ui/Grid'
 import Drawer from 'material-ui/Drawer'
 import Divider from 'material-ui/Divider'
@@ -36,6 +36,7 @@ import TrendingUp from './TrendingUp'
 import TrendingDown from './TrendingDown'
 import TrendingFlat from './TrendingFlat'
 import TradeFormModal from './TradeFormModal'
+import DataCard from './DataCard'
 
 const drawerWidth = 550
 
@@ -58,16 +59,6 @@ const styles = theme => ({
   },
   row: {
     backgroundColor: theme.palette.background.default,
-  },
-  card: {
-    minWidth: 180,
-  },
-  cardContent: {
-    minHeight: 120
-  },
-  cardTitle: {
-    marginBottom: 16,
-    fontSize: 14,
   },
   tableTitle: {
     marginBottom: 16
@@ -227,110 +218,63 @@ class Index extends React.Component {
             <Grid item xs={12}>
               <Grid container spacing={24} justify='center'>
                 <Grid item xs={4}>
-                  <Card className={classes.card}>
-                    <CardContent className={classes.cardContent}>
-                      <Typography className={classes.cardTitle} color="textSecondary">
-                        Data de hoje
-                      </Typography>
-                      <Typography variant="headline" component="h2">
-                        {moment().format('DD/MM/YYYY')}
-                      </Typography>
-                      <Typography color="textSecondary">
-                        {moment().format('dddd')}
-                      </Typography>
-                    </CardContent>
-                    <CardActions>
-                      <Button size="small">Iniciar trade</Button>
-                    </CardActions>
-                  </Card>
+                  <DataCard
+                    label='Data de hoje'
+                    content={moment().format('DD/MM/YYYY')}
+                    help={moment().format('dddd')}
+                    ActionButtons={[
+                      <Button key={uuid()} size="small">Iniciar trade</Button>
+                    ]}
+                  />
                 </Grid>
                 <Grid item xs={4}>
-                  <Card className={classes.card}>
-                    <CardContent className={classes.cardContent}>
-                      <Typography className={classes.cardTitle} color="textSecondary">
-                        Banca Inicial
-                      </Typography>
-                      <Typography variant="headline" component="h2">
-                        $ 10,000.00
-                      </Typography>
-                      <Typography color="textSecondary">
-                        Valor Fixo
-                      </Typography>
-                    </CardContent>
-                    <CardActions>
-                      <Button size="small">Editar valor</Button>
-                    </CardActions>
-                  </Card>
+                  <DataCard
+                    label='Banca Inicial'
+                    content={'$ 10,000.00'}
+                    help='Valor Fixo'
+                    ActionButtons={[
+                      <Button key={uuid()} size="small">Editar valor</Button>
+                    ]}
+                  />
                 </Grid>
                 <Grid item xs={4}>
-                  <Card className={classes.card}>
-                    <CardContent className={classes.cardContent}>
-                      <Typography className={classes.cardTitle} color="textSecondary">
-                        Percentual de Risco
-                      </Typography>
-                      <Typography variant="headline" component="h2">
-                        6% por dia
-                      </Typography>
-                      <Typography color="textSecondary">
-                        3 tentativas
-                      </Typography>
-                    </CardContent>
-                    <CardActions>
-                      <Button size="small">Editar valores</Button>
-                    </CardActions>
-                  </Card>
+                  <DataCard
+                    label='Percentual de Risco'
+                    content='6% por dia'
+                    help='3 tentativas'
+                    ActionButtons={[
+                      <Button key={uuid()} size="small">Editar valores</Button>
+                    ]}
+                  />
                 </Grid>
               </Grid>
               <Grid container spacing={24} justify='center'>
                 <Grid item xs={4}>
-                  <Card className={classes.card}>
-                    <CardContent className={classes.cardContent}>
-                      <Typography className={classes.cardTitle} color="textSecondary">
-                        Banca Atualizada
-                      </Typography>
-                      <Typography variant="headline" component="h2">
-                        $ 33,001.83
-                        {' '}<TrendingUp />
-                      </Typography>
-                      <Typography color="textSecondary">
-                        Dinâmico
-                      </Typography>
-                    </CardContent>
-                  </Card>
+                  <DataCard
+                    label='Banca Atualizada'
+                    content='$ 33,001.83'
+                    Icon={TrendingUp}
+                    help='Dinâmico'
+                  />
                 </Grid>
                 <Grid item xs={4}>
-                  <Card className={classes.card}>
-                    <CardContent className={classes.cardContent}>
-                      <Typography className={classes.cardTitle} color="textSecondary">
-                        Ganhos/Perdas
-                      </Typography>
-                      <Typography variant="headline" component="h2">
-                        $ 13,729.63
-                        {' '}<TrendingDown />
-                      </Typography>
-                      <Typography color="textSecondary">
-                        Positivo
-                      </Typography>
-                    </CardContent>
-                  </Card>
+                  <DataCard
+                    label='Ganhos/Perdas'
+                    content='$ 13,729.63'
+                    Icon={TrendingDown}
+                    help='Positivo'
+                  />
                 </Grid>
                 <Grid item xs={4}>
-                  <Card className={classes.card}>
-                    <CardContent className={classes.cardContent}>
-                      <Typography className={classes.cardTitle} color="textSecondary">
-                        Alavancagem
-                      </Typography>
-                      <Typography variant="headline" component="h2">
-                        71,24%
-                        {' '}<TrendingFlat />
-                      </Typography>
-                      <Typography color="textSecondary">
-                        Positivo
-                      </Typography>
-                    </CardContent>
-                  </Card>
+                  <DataCard
+                    label='Alavancagem'
+                    content='71,24%'
+                    Icon={TrendingFlat}
+                    help='Positivo'
+                  />
                 </Grid>
               </Grid>
+
               <Grid container spacing={24} justify='flex-start'>
                 <Grid item xs={12}>
                   <div className={classes.tableTitle}>
