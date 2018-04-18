@@ -43,9 +43,6 @@ const styles = theme => ({
   tableTitle: {
     marginBottom: 16
   },
-  spacer: {
-    flex: '1 1 100%',
-  },
   toolbar: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
