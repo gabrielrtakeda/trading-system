@@ -11,8 +11,6 @@ import IconButton from 'material-ui/IconButton'
 import AddIcon from '@material-ui/icons/Add'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
 import FlashOnIcon from '@material-ui/icons/FlashOn'
-import Send from '@material-ui/icons/Send'
-import Delete from '@material-ui/icons/Delete'
 import ThumbUp from '@material-ui/icons/ThumbUp'
 import ThumbDown from '@material-ui/icons/ThumbDown'
 import ChangeHistory from '@material-ui/icons/ChangeHistory'
@@ -22,10 +20,8 @@ import Card, { CardActions, CardContent } from 'material-ui/Card'
 import Grid from 'material-ui/Grid'
 import Drawer from 'material-ui/Drawer'
 import Divider from 'material-ui/Divider'
-import Modal from 'material-ui/Modal'
 import Tooltip from 'material-ui/Tooltip'
 import Switch from 'material-ui/Switch'
-import TextField from 'material-ui/TextField'
 import moment from 'moment'
 
 import simulation from '../services/simulation'
@@ -39,6 +35,7 @@ import TableCell from './CustomTableCell'
 import TrendingUp from './TrendingUp'
 import TrendingDown from './TrendingDown'
 import TrendingFlat from './TrendingFlat'
+import TradeFormModal from './TradeFormModal'
 
 const drawerWidth = 550
 
@@ -55,7 +52,6 @@ const styles = theme => ({
   },
   menuTitle: {
     flex: 1,
-    // marginLeft: theme.spacing.unit * 3,
   },
   table: {
     minWidth: 700,
@@ -86,23 +82,6 @@ const styles = theme => ({
     zIndex: theme.zIndex.drawer + 1,
   },
   toolbar: theme.mixins.toolbar,
-  modalPaper: {
-    position: 'absolute',
-    width: theme.spacing.unit * 50,
-    backgroundColor: theme.palette.background.paper,
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing.unit * 4,
-  },
-  backdrop: {
-    width: '100%',
-    height: '100%',
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    // Remove grey highlight
-    WebkitTapHighlightColor: 'transparent',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
   drawerPaper: {
     position: 'relative',
     color: theme.palette.common.white,
@@ -132,8 +111,8 @@ const styles = theme => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.default,
     padding: theme.spacing.unit * 3,
-    minWidth: 0, // So the Typography noWrap works
-    position: 'relative', // So the Typography noWrap works
+    minWidth: 0,
+    position: 'relative',
     overflowX: 'hidden',
     overflowY: 'auto',
     maxHeight: '100vh',
@@ -155,20 +134,6 @@ const styles = theme => ({
   },
   hide: {
     display: 'none',
-  },
-  formContainer: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-  },
-  rightIcon: {
-    marginLeft: theme.spacing.unit,
-  },
-  actionButtons: {
-    marginTop: theme.spacing.unit * 3,
   },
   icon: {
     paddingLeft: theme.spacing.unit / 2,
@@ -510,68 +475,10 @@ class Index extends React.Component {
           </Tooltip>
         </Drawer>
 
-        <Modal
-          aria-labelledby="simple-modal-title"
-          aria-describedby="simple-modal-description"
+        <TradeFormModal
           open={openModal}
           onClose={this.handleModalClose}
-          BackdropProps={{ classes: { root: classes.backdrop } }}
-          disableAutoFocus
-        >
-          <div style={inlineStyles.modal} className={classes.modalPaper}>
-            <Typography variant="title" id="modal-title">
-              Cadastro de operação
-            </Typography>
-            <Typography variant="subheading" id="simple-modal-description">
-              Informe os dados para cadastro de uma nova operação.
-            </Typography>
-            <form className={classes.formContainer}>
-              <TextField
-                fullWidth
-                margin="normal"
-                label="Ativo"
-                id="asset"
-                className={classes.textField}
-                helperText="Ativo utilizado para a operação."
-              />
-              <TextField
-                fullWidth
-                margin="normal"
-                label="Rendimento"
-                id="income-percentual"
-                className={classes.textField}
-                helperText="Porcentagem de rendimento do ativo."
-              />
-              <TextField
-                fullWidth
-                margin="normal"
-                label="Investimento"
-                id="investiment"
-                className={classes.textField}
-                helperText="Valor a ser investido na operação."
-              />
-              <Grid container justify='space-between' className={classes.actionButtons}>
-                <Grid item>
-                  <Button
-                    className={classes.button}
-                    variant="raised"
-                    color="primary"
-                    onClick={this.handleModalClose}
-                  >
-                    Cancel
-                    <Delete className={classes.rightIcon} />
-                  </Button>
-                </Grid>
-                <Grid item>
-                  <Button className={classes.button} variant="raised" color="secondary" type='submit'>
-                    Send
-                    <Send className={classes.rightIcon} />
-                  </Button>
-                </Grid>
-              </Grid>
-            </form>
-          </div>
-        </Modal>
+        />
       </div>
     )
   }
