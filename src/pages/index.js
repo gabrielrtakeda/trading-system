@@ -4,14 +4,11 @@ import classNames from 'classnames'
 import uuid from 'uuid'
 import { connect } from 'react-redux'
 import { withStyles } from 'material-ui/styles'
-import AppBar from 'material-ui/AppBar'
-import Toolbar from 'material-ui/Toolbar'
 import Typography from 'material-ui/Typography'
 import Button from 'material-ui/Button'
 import IconButton from 'material-ui/IconButton'
 import AddIcon from '@material-ui/icons/Add'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
-import FlashOnIcon from '@material-ui/icons/FlashOn'
 import ThumbUp from '@material-ui/icons/ThumbUp'
 import ThumbDown from '@material-ui/icons/ThumbDown'
 import ChangeHistory from '@material-ui/icons/ChangeHistory'
@@ -21,11 +18,9 @@ import Grid from 'material-ui/Grid'
 import Drawer from 'material-ui/Drawer'
 import Divider from 'material-ui/Divider'
 import Tooltip from 'material-ui/Tooltip'
-import Switch from 'material-ui/Switch'
 import moment from 'moment'
 
 import simulation from '../services/simulation'
-import { actions as ThemeActions } from '../redux/theme'
 import { actions as TradesActions } from '../redux/trades'
 import currency from './currency'
 import withRoot from '../withRoot'
@@ -37,8 +32,7 @@ import TrendingDown from './TrendingDown'
 import TrendingFlat from './TrendingFlat'
 import TradeFormModal from './TradeFormModal'
 import DataCard from './DataCard'
-
-const drawerWidth = 550
+import AppBar from './AppBar'
 
 const styles = theme => ({
   root: {
@@ -50,9 +44,6 @@ const styles = theme => ({
   },
   padding: {
     padding: 16
-  },
-  menuTitle: {
-    flex: 1,
   },
   table: {
     minWidth: 700,
@@ -78,7 +69,7 @@ const styles = theme => ({
     color: theme.palette.common.white,
     zIndex: theme.zIndex.modal + 1,
     overflow: 'inherit',
-    width: drawerWidth,
+    width: theme.spacing.drawerWidth,
   },
   drawerHeader: {
     display: 'flex',
@@ -86,17 +77,6 @@ const styles = theme => ({
     justifyContent: 'flex-end',
     padding: '0 8px',
     ...theme.mixins.toolbar,
-  },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-  },
-  appBarShift: {
-    marginRight: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
   },
   content: {
     flexGrow: 1,
@@ -107,7 +87,7 @@ const styles = theme => ({
     overflowX: 'hidden',
     overflowY: 'auto',
     maxHeight: '100vh',
-    marginRight: -drawerWidth,
+    marginRight: -theme.spacing.drawerWidth,
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -122,9 +102,6 @@ const styles = theme => ({
   },
   contentContainer: {
     paddingBottom: theme.spacing.unit * 8,
-  },
-  hide: {
-    display: 'none',
   },
   icon: {
     paddingLeft: theme.spacing.unit / 2,
@@ -169,44 +146,16 @@ class Index extends React.Component {
   handleDrawerOpen = () => this.setState({ openDrawer: true })
 
   render() {
-    const { classes, theme, darkMode, trades } = this.props
+    const { classes, theme, trades } = this.props
     const { openModal, openDrawer } = this.state
 
     return (
       <div className={classes.root}>
         <AppBar
-          position="absolute"
-          className={classNames(classes.appBar, {
-            [classes.appBarShift]: openDrawer
-          })}
-        >
-          <Toolbar>
-            <Typography variant="title" color="inherit" className={classes.menuTitle}>
-              Trading System
-            </Typography>
-            <Tooltip id="tooltip-darkmode" title="Dark Mode">
-              <Switch
-                checked={darkMode}
-                onChange={() => this.props.toggleTheme()}
-                value="darkMode"
-              />
-            </Tooltip>
-            <Tooltip
-              id="tooltip-simulations"
-              title="Simulations"
-            >
-              <IconButton
-                className={classNames(openDrawer && classes.hide)}
-                aria-owns={openDrawer ? 'menu-appbar' : null}
-                aria-haspopup="true"
-                onClick={this.handleDrawerOpen}
-                color="inherit"
-              >
-                <FlashOnIcon />
-              </IconButton>
-            </Tooltip>
-          </Toolbar>
-        </AppBar>
+          title='Trading System'
+          open={openDrawer}
+          onDrawerOpen={this.handleDrawerOpen}
+        />
 
         <main
           className={classNames(classes.content, {
@@ -248,6 +197,7 @@ class Index extends React.Component {
                   />
                 </Grid>
               </Grid>
+
               <Grid container spacing={24} justify='center'>
                 <Grid item xs={4}>
                   <DataCard
@@ -274,7 +224,6 @@ class Index extends React.Component {
                   />
                 </Grid>
               </Grid>
-
               <Grid container spacing={24} justify='flex-start'>
                 <Grid item xs={12}>
                   <div className={classes.tableTitle}>
@@ -433,12 +382,10 @@ Index.propTypes = {
 }
 
 const mapStateToProps = state => ({
-  darkMode: state.theme.darkMode,
   trades: state.trades,
 })
 
 const mapDispatchToProps = {
-  ...ThemeActions,
   ...TradesActions,
 }
 

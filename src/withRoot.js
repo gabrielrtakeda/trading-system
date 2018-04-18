@@ -1,10 +1,17 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
 import purple from 'material-ui/colors/purple'
 import orange from 'material-ui/colors/orange'
 import grey from 'material-ui/colors/grey'
 import lightGreen from 'material-ui/colors/lightGreen'
 import CssBaseline from 'material-ui/CssBaseline'
+
+const common = {
+  spacing: {
+    drawerWidth: 550,
+  }
+}
 
 // A theme with custom primary and secondary color.
 // It's optional.
@@ -34,6 +41,7 @@ const dark = createMuiTheme({
       dark: lightGreen[900],
     },
   },
+  ...common,
 })
 const light = createMuiTheme({
   palette: {
@@ -61,6 +69,7 @@ const light = createMuiTheme({
       dark: lightGreen[200],
     },
   },
+  ...common,
 })
 
 function withRoot(Component) {
@@ -76,7 +85,11 @@ function withRoot(Component) {
     )
   }
 
-  return WithRoot
+  const mapStateToProps = state => ({
+    darkMode: state.theme.darkMode,
+  })
+
+  return connect(mapStateToProps)(WithRoot)
 }
 
 export default withRoot
