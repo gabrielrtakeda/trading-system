@@ -12,6 +12,7 @@ import Delete from '@material-ui/icons/Delete'
 import Send from '@material-ui/icons/Send'
 
 import Autocomplete from './Autocomplete'
+import { TradeContext } from './TradeContext'
 import { actions as TradesActions } from '../redux/trades'
 
 const styles = theme => ({
@@ -56,23 +57,6 @@ const inlineStyles = {
 }
 
 class TradeFormModal extends React.Component {
-  state = {
-    trade: {
-      asset: undefined,
-      incomePercentual: undefined,
-      investiment: undefined,
-    },
-  }
-
-  handleChange = name => value => {
-    this.setState({
-      trade: {
-        ...this.state.trade,
-        [name]: value,
-      }
-    })
-  }
-
   render () {
     const { classes, open, onClose, addTrade } = this.props
 
@@ -93,69 +77,78 @@ class TradeFormModal extends React.Component {
             Informe os dados para cadastro de uma nova operação.
           </Typography>
 
-          <form
-            className={classes.formContainer}
-            onSubmit={e => {
-              e.preventDefault()
-              addTrade(this.state.trade)
-              onClose()
-            }}
-          >
-            <Autocomplete
-              fullWidth
-              label="Ativo"
-              helperText="Ativo utilizado para a operação."
-              onChange={this.handleChange('asset')}
-            />
-            <TextField
-              fullWidth
-              margin="normal"
-              label="Rendimento"
-              id="income-percentual"
-              className={classes.textField}
-              helperText="Porcentagem de rendimento do ativo."
-              type="number"
-              onChange={e => this.handleChange('incomePercentual')(Number(e.target.value) / 100)}
-              inputProps={{
-                step: "1",
-                min: "0",
-                max: "100",
-              }}
-              InputProps={{
-                endAdornment: <InputAdornment position="end">%</InputAdornment>,
-              }}
-            />
-            <TextField
-              fullWidth
-              margin="normal"
-              label="Investimento"
-              id="investiment"
-              className={classes.textField}
-              helperText="Valor a ser investido na operação."
-              type='number'
-              onChange={e => this.handleChange('investiment')(Number(e.target.value))}
-              inputProps={{
-                step: "0.01"
-              }}
-              InputProps={{
-                startAdornment: <InputAdornment position="start">$</InputAdornment>,
-              }}
-            />
-            <Grid container justify='space-between' className={classes.actionButtons}>
-              <Grid item>
-                <Button variant="raised" color="primary" onClick={onClose}>
-                  Cancel
-                  <Delete className={classes.rightIcon} />
-                </Button>
-              </Grid>
-              <Grid item>
-                <Button variant="raised" color="secondary" type='submit'>
-                  Send
-                  <Send className={classes.rightIcon} />
-                </Button>
-              </Grid>
-            </Grid>
-          </form>
+          <TradeContext.Consumer>
+            {({ trade, setTradeAttr }) => (
+              <form
+                className={classes.formContainer}
+                onSubmit={e => {
+                  e.preventDefault()
+                  addTrade(trade)
+                  onClose()
+                }}
+              >
+                <Autocomplete
+                  fullWidth
+                  label="Ativo"
+                  helperText="Ativo utilizado para a operação."
+                  onChange={setTradeAttr('asset')}
+                />
+                <TextField
+                  fullWidth
+                  margin="normal"
+                  label="Rendimento"
+                  id="income-percentual"
+                  className={classes.textField}
+                  helperText="Porcentagem de rendimento do ativo."
+                  value={trade.incomePercentual ? trade.incomePercentual * 100 : ''}
+                  type="number"
+                  onChange={e => {
+                    const income = Number(parseFloat(Number(e.target.value) / 100).toFixed(2))
+                    setTradeAttr('incomePercentual')(income)
+                  }}
+                  inputProps={{
+                    step: "1",
+                    min: "0",
+                    max: "100",
+                  }}
+                  InputProps={{
+                    endAdornment: <InputAdornment position="end">%</InputAdornment>,
+                  }}
+                />
+                <TextField
+                  fullWidth
+                  margin="normal"
+                  label="Investimento"
+                  id="investiment"
+                  className={classes.textField}
+                  helperText="Valor a ser investido na operação."
+                  value={trade.investiment ? trade.investiment : ''}
+                  type='number'
+                  onChange={e => setTradeAttr('investiment')(Number(e.target.value))}
+                  inputProps={{
+                    step: "0.01"
+                  }}
+                  InputProps={{
+                    startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                  }}
+                />
+                <Grid container justify='space-between' className={classes.actionButtons}>
+                  <Grid item>
+                    <Button variant="raised" color="primary" onClick={onClose}>
+                      Cancel
+                      <Delete className={classes.rightIcon} />
+                    </Button>
+                  </Grid>
+                  <Grid item>
+                    <Button variant="raised" color="secondary" type='submit'>
+                      Send
+                      <Send className={classes.rightIcon} />
+                    </Button>
+                  </Grid>
+                </Grid>
+              </form>
+            )}
+          </TradeContext.Consumer>
         </div>
       </Modal>
     )

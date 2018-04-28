@@ -1,3 +1,5 @@
+const slice = v => parseFloat(v).toFixed(2)
+
 const simulate = (quantity, percentual, amount, retentionPercentual = 0.60) => {
   const prev = {
     retain: 0,
@@ -14,7 +16,12 @@ const simulate = (quantity, percentual, amount, retentionPercentual = 0.60) => {
     prev.retain = retain
     prev.investiment = investiment
 
-    simulation.push({ investiment, total, gain, retain })
+    simulation.push({
+      investiment: slice(investiment),
+      total: slice(total),
+      gain: slice(gain),
+      retain: slice(retain),
+    })
   }
 
   return simulation

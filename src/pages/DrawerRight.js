@@ -15,6 +15,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight'
 import simulation from '../services/simulation'
 import currency from './currency'
 import TableCell from './CustomTableCell'
+import { TradeContext } from './TradeContext'
 
 const styles = theme => ({
   drawerPaper: {
@@ -58,7 +59,7 @@ const inlineStyles = {
   }),
 }
 
-const DrawerRight = ({ classes, open, onDrawerClose, onModalOpen, theme }) => (
+const DrawerRight = ({ classes, open, onDrawerClose, onModalOpen, setModalValues, theme }) => (
   <Drawer
     variant="persistent"
     anchor='right'
@@ -89,9 +90,20 @@ const DrawerRight = ({ classes, open, onDrawerClose, onModalOpen, theme }) => (
               </TableRow>
             </TableHead>
             <TableBody>
-              {simulation(19, 0.80, 385.44).map((n, i) => {
-                return (
-                  <TableRow className={classes.row} key={i} hover>
+              <TradeContext.Consumer>
+                {({ setTrade }) => simulation(19, 0.80, 385.44).map((n, i) => (
+                  <TableRow
+                    hover
+                    key={i}
+                    className={classes.row}
+                    onClick={() => {
+                      setTrade({
+                        investiment: n.investiment,
+                        incomePercentual: 0.80
+                      })
+                      onModalOpen()
+                    }}
+                  >
                     <TableCell numeric>{i + 1}</TableCell>
                     <TableCell numeric>{0.80 * 100}%</TableCell>
                     <TableCell numeric style={inlineStyles.cellHighlight(theme)}>
@@ -99,8 +111,8 @@ const DrawerRight = ({ classes, open, onDrawerClose, onModalOpen, theme }) => (
                     </TableCell>
                     <TableCell numeric>{currency.format(n.gain)}</TableCell>
                   </TableRow>
-                )
-              })}
+                ))}
+              </TradeContext.Consumer>
             </TableBody>
           </Table>
         </Paper>
@@ -108,14 +120,24 @@ const DrawerRight = ({ classes, open, onDrawerClose, onModalOpen, theme }) => (
     </Grid>
 
     <Tooltip id="tooltip-fab" title="Adicionar Operação" placement="left">
-      <Button
-        variant="fab"
-        className={classes.fab}
-        color='secondary'
-        onClick={onModalOpen}
-      >
-        <AddIcon style={{ fill: theme.palette.common.white }} />
-      </Button>
+      <TradeContext.Consumer>
+        {({ setTrade }) => (
+          <Button
+            variant="fab"
+            className={classes.fab}
+            color='secondary'
+            onClick={() => {
+              setTrade({
+                incomePercentual: 0,
+                investiment: 0,
+              })
+              onModalOpen()
+            }}
+          >
+            <AddIcon style={{ fill: theme.palette.common.white }} />
+          </Button>
+        )}
+      </TradeContext.Consumer>
     </Tooltip>
   </Drawer>
 )

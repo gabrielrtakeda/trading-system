@@ -26,6 +26,8 @@ export default (state = initialState, { type, payload }) => {
         .assign({ status: payload.status })
         .write()
     break
+
+    default: (f => f)()
   }
 
   return (

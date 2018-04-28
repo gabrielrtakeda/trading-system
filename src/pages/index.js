@@ -9,11 +9,32 @@ import DynamicDataSection from './DynamicDataSection'
 import TradesTableSection from './TradesTableSection'
 import TradeFormModal from './TradeFormModal'
 import DrawerRight from './DrawerRight'
+import { TradeContext } from './TradeContext'
 
 class Index extends React.Component {
-  state = {
-    openModal: false,
-    openDrawer: true,
+  constructor(props) {
+    super(props)
+
+    this.setTrade = trade => this.setState(state => ({ trade }))
+    this.setTradeAttr = attr => value => {
+      this.setState(state => ({
+        trade: {
+          ...this.state.trade,
+          [attr]: value
+        }
+      }))
+    }
+
+    this.state = {
+      openModal: false,
+      openDrawer: true,
+      trade: {
+        incomePercentual: 0,
+        investiment: 0,
+      },
+      setTrade: this.setTrade,
+      setTradeAttr: this.setTradeAttr,
+    }
   }
 
   handleModalClose = () => this.setState({ openModal: false })
@@ -38,16 +59,17 @@ class Index extends React.Component {
           <TradesTableSection />
         </AppContent>
 
-        <DrawerRight
-          open={openDrawer}
-          onDrawerClose={this.handleDrawerClose}
-          onModalOpen={this.handleModalOpen}
-        />
-
-        <TradeFormModal
-          open={openModal}
-          onClose={this.handleModalClose}
-        />
+        <TradeContext.Provider value={this.state}>
+          <TradeFormModal
+            open={openModal}
+            onClose={this.handleModalClose}
+          />
+          <DrawerRight
+            open={openDrawer}
+            onDrawerClose={this.handleDrawerClose}
+            onModalOpen={this.handleModalOpen}
+          />
+        </TradeContext.Provider>
       </AppRoot>
     )
   }
