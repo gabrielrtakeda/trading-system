@@ -7,10 +7,15 @@ import TrendingUp from './TrendingUp'
 import TrendingDown from './TrendingDown'
 import TrendingFlat from './TrendingFlat'
 
-const sumFiltered = (trades, status) => trades
-  .filter(t => t.status === status)
-  .map(t => t.investiment * t.incomePercentual)
-  .reduce((a, b) => a + b)
+const sumFiltered = (trades, status) => {
+  const filtered = trades.filter(t => t.status === status)
+
+  if (filtered.length === 0) return 0
+
+  return filtered
+    .map(t => t.investiment * t.incomePercentual)
+    .reduce((a, b) => a + b)
+}
 
 const DynamicDataSection = ({ xs, trades }) => {
   const amount = 10000
